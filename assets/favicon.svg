@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <style>
+    .r {
+      fill: none;
+      stroke: #2dfcff;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 6px #2dfcff);
+    }
+  </style>
+  <path class="r" d="M30 75 V25 H55 Q75 25 75 45 Q75 60 60 62 L75 75" />
+</svg>

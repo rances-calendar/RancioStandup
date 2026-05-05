@@ -255,18 +255,29 @@ h1, h2, h3 {
     height: 100%;
 }
 
+.hero-image-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 42% 40%, transparent 40%, var(--bg-color) 90%);
+    z-index: 3;
+    pointer-events: none;
+}
+
 .hero-image {
     width: 100%;
     max-width: 800px;
     height: 650px;
     object-fit: cover;
-    object-position: center 30%; /* Focus on the upper/center part of the comedian */
+    object-position: 42% 20%; /* Shift focus slightly to the left/center where he is */
     display: block;
     position: relative;
     z-index: 2;
-    /* Blend with background */
-    -webkit-mask-image: radial-gradient(ellipse at center 40%, black 40%, transparent 80%);
-    mask-image: radial-gradient(ellipse at center 40%, black 40%, transparent 80%);
+    transform: scale(1.15); /* Subtle zoom */
+    /* Blend with background - shifted center to match his position */
+    -webkit-mask-image: radial-gradient(ellipse at 42% 40%, black 25%, transparent 85%);
+    mask-image: radial-gradient(ellipse at 42% 40%, black 25%, transparent 85%);
+    filter: brightness(1.05) contrast(1.1);
 }
 
 /* General Sections */
