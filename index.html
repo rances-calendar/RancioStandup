@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rancio Standup - Mi mamá dice que soy gracioso. Entradas para próximos shows y especiales de comedia.">
+    <title>Rancio Standup</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <!-- SEO & Social Media (OpenGraph) -->
+    <meta property="og:title" content="Rancio Standup - Mi mamá dice que soy gracioso">
+    <meta property="og:description" content="Ven a ver a Rancio Standup en vivo. Próximos shows, especiales de comedia y más.">
+    <meta property="og:image" content="assets/hero_optimized.jpg">
+    <meta property="og:url" content="https://ranciostandup.netlify.app/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rancio Standup">
+    <meta name="twitter:description" content="Mi mamá dice que soy gracioso. Entradas para próximos shows y especiales.">
+    <meta name="twitter:image" content="assets/hero_optimized.jpg">
+</head>
+<body>
+    <div class="blob-bg blob-1"></div>
+    <div class="blob-bg blob-2"></div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">RANCIO<span>.STANDUP</span></a>
+            <div class="nav-links">
+                <div class="social-links nav-social">
+                    <a href="https://www.instagram.com/rancio.standup/" target="_blank" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    </a>
+                    <a href="https://www.tiktok.com/@rancio.standup" target="_blank" aria-label="TikTok">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v3a8 8 0 0 1-5-1z"></path></svg>
+                    </a>
+                    <a href="https://www.youtube.com/@RancioStandUp" target="_blank" aria-label="YouTube">
+                        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                    </a>
+                </div>
+                <a href="#shows" class="nav-link">Shows</a>
+                <a href="#specials" class="nav-link">Especiales</a>
+                <a href="#contact" class="nav-link">Contacto</a>
+            </div>
+            <button class="menu-btn" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1 class="hero-title reveal">SI TE GUSTO, TENGO ESPOSA.<br>SI TE GUSTA MI COMEDIA…</h1>
+                <p class="hero-desc reveal delay-100">Ven a verme en vivo.</p>
+                <div class="hero-buttons reveal delay-200">
+                    <a href="#shows" class="btn btn-primary">Próximos Shows</a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper reveal delay-300">
+                <div class="hero-image-glow"></div>
+                <!-- Original 19MB image: <img src="assets/hero.jpg" alt="Rancio Standup Comedian" class="hero-image"> -->
+                <img src="assets/hero_optimized.jpg" alt="Rancio Standup Comedian" class="hero-image">
+            </div>
+        </section>
+
+        <!-- Shows Section -->
+        <section class="shows" id="shows">
+            <div class="section-header reveal">
+                <h2>PRÓXIMOS SHOWS</h2>
+            </div>
+            
+            <div class="shows-carousel-wrapper">
+                <button class="carousel-btn prev" aria-label="Previous show">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                
+                <div class="shows-carousel" id="showsCarousel">
+                    <!-- Cards will be populated by JS -->
+                </div>
+                
+                <button class="carousel-btn next" aria-label="Next show">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </button>
+            </div>
+            <div class="carousel-indicators">
+                <span class="indicator active"></span>
+                <span class="indicator"></span>
+            </div>
+        </section>
+
+        <!-- Specials Section -->
+        <section class="specials" id="specials">
+            <div class="section-header reveal">
+                <h2>ESPECIALES</h2>
+            </div>
+            
+            <div class="video-grid">
+                <!-- Video 1 -->
+                <div class="video-card reveal delay-100">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/Yufv-9ZsdQo/maxresdefault.jpg" alt="Intenté ser ateo... pero nací veneco">
+                        <div class="play-btn" data-youtube="Yufv-9ZsdQo"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">INTENTÉ SER ATEO... PERO NACÍ VENECO</div>
+                        <div class="video-meta">
+                            <span class="platform">YouTube</span>
+                            <span class="duration">10 MINUTOS</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Video 2 -->
+                <div class="video-card reveal delay-200">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/xLe0QZsCQi4/maxresdefault.jpg" alt="Migrar es un chiste... literal">
+                        <div class="play-btn" data-youtube="xLe0QZsCQi4"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">MIGRAR ES UN CHISTE... LITERAL</div>
+                        <div class="video-meta">
+                            <span class="platform">YouTube</span>
+                            <span class="duration">10 MINUTOS</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Video 3 -->
+                <div class="video-card reveal delay-300">
+                    <div class="video-thumbnail">
+                        <img src="https://img.youtube.com/vi/ewY2P0SBuTs/maxresdefault.jpg" alt="Ser papá es un chiste... literal">
+                        <div class="play-btn" data-youtube="ewY2P0SBuTs"><svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">SER PAPÁ ES UN CHISTE... LITERAL</div>
+                        <div class="video-meta">
+                            <span class="platform">YouTube</span>
+                            <span class="duration">10 MINUTOS</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Modal -->
+        <div class="video-modal" id="videoModal">
+            <div class="modal-content">
+                <button class="close-modal" id="closeModal">&times;</button>
+                <div class="iframe-container">
+                    <iframe id="youtubePlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+                <div class="modal-footer">
+                    <a href="https://youtube.com/" target="_blank" class="btn btn-primary btn-sm">Ir a mi canal de YouTube</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Show Detail Modal -->
+        <div class="show-modal" id="showModal">
+            <div class="modal-content show-modal-content">
+                <button class="close-modal" id="closeShowModal">&times;</button>
+                <div class="show-modal-body">
+                    <div class="show-flyer-container">
+                        <img id="showModalFlyer" src="" alt="Show Flyer">
+                    </div>
+                    <div class="show-details-container">
+                        <h2 id="showModalTitle" class="highlight"></h2>
+                        <div class="show-meta-info">
+                            <p class="show-date-text">📅 <span id="showModalDate"></span></p>
+                            <p class="show-location-text">📍 <span id="showModalVenue"></span><span id="showModalCity"></span></p>
+                            <p id="showModalComediansContainer" class="show-comedians-text" style="display: none;">🎭 <span id="showModalComedians"></span></p>
+                            <p class="show-price-text">🎟️ <span id="showModalPrice"></span></p>
+                        </div>
+                        <div class="modal-footer show-modal-footer">
+                            <a id="showModalTicketsBtn" href="#" target="_blank" class="btn btn-primary btn-lg btn-block">Comprar Entradas</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="contact-wrapper">
+                <div class="contact-image reveal">
+                    <img src="assets/contacto.jpg" alt="Rancio Standup Comedian Priest">
+                </div>
+                <div class="contact-content reveal delay-100">
+                    <div class="section-header contact-header">
+                        <h2>¡ESCRIBIME PARA SHOWS, COLABORACIONES,<br>O SIMPLEMENTE SALUDAR!</h2>
+                    </div>
+                    <div class="contact-container">
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name">Nombre *</label>
+                                    <input type="text" id="name" name="name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Correo *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="subject">Asunto (Show)</label>
+                                    <input type="text" id="subject" name="subject">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Mensaje</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Enviar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="social-links">
+                <!-- Using inline SVGs for icons -->
+                <a href="https://www.instagram.com/rancio.standup/" target="_blank" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://www.tiktok.com/@rancio.standup" target="_blank" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5v3a8 8 0 0 1-5-1z"></path></svg>
+                </a>
+                <a href="https://www.youtube.com/@RancioStandUp" target="_blank" aria-label="YouTube">
+                    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+                </a>
+            </div>
+            <div class="footer-logo">RANCIO.STANDUP</div>
+            <div class="footer-policy">
+                <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
