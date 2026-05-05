@@ -255,18 +255,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
+            const href = this.getAttribute('href');
+            
+            // Ignore if href is just "#" or doesn't start with "#" (e.g. changed dynamically)
+            if (!href || !href.startsWith('#') || href === '#') {
+                return;
+            }
+
             e.preventDefault();
             
-            if(window.innerWidth <= 768 && navLinks.style.display === 'flex') {
+            if(window.innerWidth <= 768 && navLinks && navLinks.style.display === 'flex') {
                 navLinks.style.display = 'none';
             }
 
-            const target = document.querySelector(this.getAttribute('href'));
-            if(target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            try {
+                const target = document.querySelector(href);
+                if(target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            } catch (err) {
+                // Just in case of any other invalid selectors
+                console.error('Invalid selector for smooth scroll:', href);
             }
         });
     });
