@@ -18,10 +18,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
+        const scroll = window.scrollY;
+        
+        // Navbar glass effect
+        if (scroll > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
+        }
+
+        // Parallax effect for featured banner
+        const featuredBg = document.querySelector('.featured-bg');
+        if (featuredBg) {
+            const zoom = 1 + (scroll / 2000);
+            featuredBg.style.transform = `scale(${zoom})`;
         }
     });
 
@@ -45,27 +55,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Carousel Logic
-    const carousel = document.getElementById('showsCarousel');
-    const nextBtn = document.querySelector('.carousel-btn.next');
-    const prevBtn = document.querySelector('.carousel-btn.prev');
-    
-    // Intersection Observer for highlighting center card
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if(entry.isIntersecting && entry.intersectionRatio > 0.8) {
-                document.querySelectorAll('.show-card').forEach(c => c.classList.remove('active'));
-                entry.target.classList.add('active');
-            }
-        });
-    }, {
-        root: carousel,
-        threshold: 0.9
-    });
+    const setupCarousel = (carouselId, nextBtnId, prevBtnId) => {
+        const carousel = document.getElementById(carouselId);
+        const nextBtn = document.getElementById(nextBtnId);
+        const prevBtn = document.getElementById(prevBtnId);
+        
+        if(!carousel || !nextBtn || !prevBtn) return;
 
-    if(carousel && nextBtn && prevBtn) {
-        // Calculate scroll amount based on card width + gap
         const getScrollAmount = () => {
-            const firstCard = document.querySelector('.show-card');
+            const firstCard = carousel.querySelector('.show-card');
             if(!firstCard) return 300;
             const cardWidth = firstCard.offsetWidth;
             const gap = parseInt(window.getComputedStyle(carousel).gap) || 20;
@@ -79,8 +77,26 @@ document.addEventListener('DOMContentLoaded', () => {
         prevBtn.addEventListener('click', () => {
             carousel.scrollBy({ left: -getScrollAmount(), behavior: 'smooth' });
         });
-    }
 
+        // Intersection Observer for highlighting center card in THIS carousel
+        const centerObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting && entry.intersectionRatio > 0.8) {
+                    carousel.querySelectorAll('.show-card').forEach(c => c.classList.remove('active'));
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            root: carousel,
+            threshold: 0.9
+        });
+
+        return centerObserver;
+    };
+
+    // Setup observers for both carousels (will be used during population)
+    let regularObserver, openMicObserver;
+    
     // Dynamic Shows Fetching & Modal Logic
     const showsAPI = 'https://tezbcztewhvotmohbjju.supabase.co/functions/v1/public-shows?comedian_id=c3952e23-4b7b-46a8-9a5f-5f0361a7bc6c';
     const showModal = document.getElementById('showModal');
@@ -150,50 +166,121 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const loadShows = async () => {
+    const renderShowsToCarousel = (shows, carousel, observer) => {
         if (!carousel) return;
+        carousel.innerHTML = '';
+        
+        shows.forEach((show, index) => {
+            const { day, month } = getShortDate(show.fecha);
+            
+            const card = document.createElement('div');
+            card.className = `show-card reveal delay-${(index % 5) * 100 + 100} ${index === 0 ? 'active' : ''}`;
+            card.innerHTML = `
+                <div class="show-card-bg" style="${show.flyer_url ? `background-image: url('${show.flyer_url}')` : ''}"></div>
+                <div class="show-card-content">
+                    <div class="show-date">
+                        <span class="day">${day}</span>
+                        <span class="month">${month}</span>
+                    </div>
+                    <div class="show-info">
+                        <h3>${show.nombre}</h3>
+                        <p>${show.ciudad ? show.ciudad + ' - ' : ''}${show.venue || 'TBA'}</p>
+                    </div>
+                    <button class="btn btn-primary btn-sm">Más Info</button>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => openShowModal(show));
+            
+            carousel.appendChild(card);
+            if(observer) observer.observe(card); // Carousel center observer
+            revealObserver.observe(card); // Global reveal observer
+        });
+    };
+
+    const loadShows = async () => {
+        const regularCarousel = document.getElementById('regularShowsCarousel');
+        const openMicCarousel = document.getElementById('openMicsCarousel');
+        const regularSection = document.getElementById('regularShowsSection');
+        const openMicSection = document.getElementById('openMicsSection');
+        
+        if (!regularCarousel || !openMicCarousel) return;
         
         try {
-            carousel.innerHTML = '<p style="text-align: center; width: 100%;">Cargando shows...</p>';
+            regularCarousel.innerHTML = '<p style="text-align: center; width: 100%;">Cargando...</p>';
+            openMicCarousel.innerHTML = '<p style="text-align: center; width: 100%;">Cargando...</p>';
             
             const response = await fetch(showsAPI);
             const result = await response.json();
             
             if (result.success && result.data && result.data.length > 0) {
-                carousel.innerHTML = ''; // Clear loading
+                // Filter shows based on 'tipo' attribute (with fallback to name for local testing)
+                const isOpenMic = (s) => {
+                    const type = s.tipo || "";
+                    const name = s.nombre || "";
+                    
+                    // If type is defined, use it strictly
+                    if (type) {
+                        return type.toLowerCase().includes('open mic');
+                    }
+                    
+                    // Fallback: Check if name specifically contains "Open Mic"
+                    // User confirmed "Open Lab" is Public, so we match "Open Mic" strictly
+                    return name.toLowerCase().includes('open mic');
+                };
+
+                const regularShows = result.data.filter(s => !isOpenMic(s));
+                const openMicShows = result.data.filter(s => isOpenMic(s));
                 
-                result.data.forEach((show, index) => {
-                    const { day, month } = getShortDate(show.fecha);
+                // Setup navigation and observers
+                regularObserver = setupCarousel('regularShowsCarousel', 'nextRegular', 'prevRegular');
+                openMicObserver = setupCarousel('openMicsCarousel', 'nextOpen', 'prevOpen');
+
+                // Populate regular shows
+                if (regularShows.length > 0) {
+                    renderShowsToCarousel(regularShows, regularCarousel, regularObserver);
+                    regularSection.style.display = 'block';
                     
-                    const card = document.createElement('div');
-                    card.className = `show-card reveal delay-${(index % 5) * 100 + 100} ${index === 0 ? 'active' : ''}`;
-                    card.innerHTML = `
-                        <div class="show-card-bg" style="${show.flyer_url ? `background-image: url('${show.flyer_url}')` : ''}"></div>
-                        <div class="show-card-content">
-                            <div class="show-date">
-                                <span class="day">${day}</span>
-                                <span class="month">${month}</span>
-                            </div>
-                            <div class="show-info">
-                                <h3>${show.nombre}</h3>
-                                <p>${show.ciudad ? show.ciudad + ' - ' : ''}${show.venue || 'TBA'}</p>
-                            </div>
-                            <button class="btn btn-primary btn-sm">Más Info</button>
-                        </div>
-                    `;
-                    
-                    card.addEventListener('click', () => openShowModal(show));
-                    
-                    carousel.appendChild(card);
-                    observer.observe(card); // Carousel center observer
-                    revealObserver.observe(card); // Global reveal observer
-                });
+                    // Hide buttons if items fit on screen and center
+                    setTimeout(() => {
+                        const hasOverflow = regularCarousel.scrollWidth > regularCarousel.clientWidth;
+                        console.log('Regular Carousel Overflow:', hasOverflow, regularCarousel.scrollWidth, regularCarousel.clientWidth);
+                        document.getElementById('prevRegular').style.display = hasOverflow ? 'flex' : 'none';
+                        document.getElementById('nextRegular').style.display = hasOverflow ? 'flex' : 'none';
+                        if (!hasOverflow) {
+                            regularCarousel.classList.add('centered');
+                        }
+                    }, 500);
+                } else {
+                    regularSection.style.display = 'none';
+                }
+
+                // Populate open mics
+                if (openMicShows.length > 0) {
+                    renderShowsToCarousel(openMicShows, openMicCarousel, openMicObserver);
+                    openMicSection.style.display = 'block';
+
+                    // Hide buttons if items fit on screen and center
+                    setTimeout(() => {
+                        const hasOverflow = openMicCarousel.scrollWidth > openMicCarousel.clientWidth;
+                        console.log('Open Mic Carousel Overflow:', hasOverflow, openMicCarousel.scrollWidth, openMicCarousel.clientWidth);
+                        document.getElementById('prevOpen').style.display = hasOverflow ? 'flex' : 'none';
+                        document.getElementById('nextOpen').style.display = hasOverflow ? 'flex' : 'none';
+                        if (!hasOverflow) {
+                            openMicCarousel.classList.add('centered');
+                        }
+                    }, 500);
+                } else {
+                    openMicSection.style.display = 'none';
+                }
+
             } else {
-                carousel.innerHTML = '<p style="text-align: center; width: 100%;">No hay shows próximos por el momento.</p>';
+                regularCarousel.innerHTML = '<p style="text-align: center; width: 100%;">No hay shows próximos.</p>';
+                openMicSection.style.display = 'none';
             }
         } catch (error) {
             console.error('Error fetching shows:', error);
-            carousel.innerHTML = '<p style="text-align: center; width: 100%;">Hubo un error cargando los shows. Intenta de nuevo más tarde.</p>';
+            regularCarousel.innerHTML = '<p style="text-align: center; width: 100%;">Error cargando los shows.</p>';
         }
     };
 
